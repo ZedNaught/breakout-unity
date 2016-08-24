@@ -414,7 +414,7 @@ GameObject:
   - 114: {fileID: 277525569}
   m_Layer: 0
   m_Name: Ball
-  m_TagString: Untagged
+  m_TagString: Ball
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -430,7 +430,7 @@ CircleCollider2D:
   m_Material: {fileID: 6200000, guid: a7050cb1260a541f085527af7aa06783, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_Offset: {x: -0.001, y: -0.002}
+  m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.18505268
 --- !u!212 &277525566
@@ -507,8 +507,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3e0d80b9ccc64a4aad40fea27113613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ballSpeed: 2
-  bat: {fileID: 965738667}
+  m_ballSpeedY: 7
+  m_bat: {fileID: 965738667}
 --- !u!1 &370883120
 GameObject:
   m_ObjectHideFlags: 0
@@ -820,7 +820,7 @@ GameObject:
   - 114: {fileID: 965738672}
   m_Layer: 0
   m_Name: Bat
-  m_TagString: Untagged
+  m_TagString: Bat
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -866,7 +866,7 @@ Transform:
   m_GameObject: {fileID: 965738667}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.14, y: -4.72, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 1.5, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
@@ -882,7 +882,7 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_Offset: {x: 0.0010135323, y: 0.050897896}
+  m_Offset: {x: 0, y: 0.050897896}
   serializedVersion: 2
   m_Size: {x: 0.93278205, y: 0.20867682}
 --- !u!50 &965738671
@@ -897,7 +897,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
@@ -913,7 +913,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed837c6ea2c5b4211a56f479305e5eeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  batSpeed: 5
+  m_batSpeed: 5
+  m_batLeftBound: -4.85
+  m_batRightBound: 4.9
+  m_ballXVelocityInheritance: 0.25
+  m_xOffsetForceScale: 100
 --- !u!1 &999177093
 GameObject:
   m_ObjectHideFlags: 0

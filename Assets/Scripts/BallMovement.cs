@@ -3,52 +3,59 @@ using System.Collections;
 
 public class BallMovement : MonoBehaviour {
 
-    public float ballSpeed;
-    public GameObject bat;
+    public float m_ballSpeedY;
+    public GameObject m_bat;
 
-    private Rigidbody2D rb;
-    private bool onBat;
-    private float ballRadius;
-    private float verticalBatOffset;
+    private Rigidbody2D m_rb;
+    private bool m_onBat;
+    private float m_ballRadius;
+    private float m_verticalBallOffset;
 
     void Start() {
-        rb = GetComponent<Rigidbody2D>();
-        ballRadius = GetComponent<CircleCollider2D>().radius;
-        verticalBatOffset = ballRadius + bat.GetComponent<BoxCollider2D>().size.y / 2.0f + 0.1f;
+        m_rb = GetComponent<Rigidbody2D>();
+        m_ballRadius = GetComponent<CircleCollider2D>().radius;
+        m_verticalBallOffset = m_ballRadius + m_bat.GetComponent<BoxCollider2D>().size.y / 2.0f + 0.2f;
 
         ResetToBat();
     }
 
     void Update() {
-        if (Input.GetKeyDown("space") && onBat) {
+        if (m_onBat && Input.GetButtonDown("Jump")) {
             Launch();
         }
-        if (onBat) {
+        if (m_onBat) {
             TrackBat();
         }
     }
 
-    void StartMovement() {
-        rb.velocity = ballSpeed * (new Vector2(-1.0f, 2.0f)).normalized;
-    }
+//    void StartMovement() {
+////        m_rb.velocity = m_ballSpeed * (new Vector2(-1.0f, 1.0f)).normalized;
+//    }
 
     void ResetToBat() {
-        onBat = true;
-        rb.isKinematic = true;
+        m_onBat = true;
+        m_rb.isKinematic = true;
+        m_rb.velocity = Vector3.zero;
     }
 
     void Launch() {
-        rb.isKinematic = false;
-        onBat = false;
-        StartMovement();
+        m_onBat = false;
+        m_rb.isKinematic = false;
+        Vector2 batVelocity = m_bat.GetComponent<Rigidbody2D>().velocity;
+        m_rb.velocity = batVelocity + m_ballSpeedY * Vector2.up;
+//        StartMovement();
     }
 
     void TrackBat() {
-        transform.position = new Vector2(bat.transform.position.x, bat.transform.position.y + verticalBatOffset);
+        Vector3 batPosition = m_bat.transform.position;
+        transform.position = new Vector2(batPosition.x, batPosition.y + m_verticalBallOffset);
     }
 
     void OnTriggerEnter2D(Collider2D other) {
         Debug.Log(other);
     }
 
+    void Hit() {
+        
+    }
 }
