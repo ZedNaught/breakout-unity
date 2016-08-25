@@ -1,17 +1,41 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
-    public GameObject[] m_brickPrefabs;
-    public GameObject m_brickHolder;
+    public GameObject[] m_brickPrefabs;  // list of available brick prefabs
+    public GameObject m_brickHolder;  // organizational GameObject to hold bricks
+    public GameObject m_ball, m_bat;  // references to ball and bat
+    public int m_startLives;  // how many lives the player starts with
+    public Text m_scoreText, m_livesText, m_gameOverText;  // various UI text objects
+    public int m_numBricksX, m_numBricksY;  // how may bricks in each row and "column"
 
-    public int m_numBricksX, m_numBricksY;
+    private int m_score, m_lives;  // track current score and number of lives
 
-    private int m_score, m_lives;
+    private int Score {
+        get {
+            return m_score;
+        }
+        set {
+            m_score = value;
+            m_scoreText.text = string.Format("Score: {0}", m_score);
+        }
+    }
+
+    private int Lives {
+        get {
+            return m_lives;
+        }
+        set {
+            m_lives = Mathf.Max(0, value);
+            m_livesText.text = string.Format("Lives: {0}", m_lives);
+        }
+    }
 
 	void Start() {
-	    m_score = 0;
-        m_lives = 3;
+	    Score = 0;
+        Lives = m_startLives;
+        m_gameOverText.transform.parent.gameObject.SetActive(false);
         SetupBricks();
 	}
 
@@ -34,8 +58,47 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    void DestroyBricks() {
+        GameObject[] bricks = GameObject.FindGameObjectsWithTag("Brick");
+        foreach(GameObject brick in bricks) {
+            Destroy(brick);
+        }
+    }
+
     public int IncrementScore() {
-        m_score += 1;
-        return m_score;
+        Score += 1;
+        return Score;
+    }
+
+    public void Death() {
+        if (Lives > 0) {
+            Lives -= 1;
+            ResetBall();
+        }
+        else {
+            EndGame();
+        }
+    }
+
+    void ResetBall() {
+        m_ball.GetComponent<BallMovement>().ResetToBat();
+    }
+
+    public void RestartGame() {
+        DestroyBricks();
+        SetupBricks();
+        Score = 0;
+        Lives = m_startLives;
+        m_gameOverText.transform.parent.gameObject.SetActive(false);
+        m_bat.GetComponent<BatMovement>().EnableMovement();
+        m_ball.GetComponent<BallMovement>().ResetToBat();
+        m_ball.SetActive(true);
+    }
+
+    void EndGame() {
+        m_ball.SetActive(false);
+        m_bat.GetComponent<BatMovement>().DisableMovement();
+        m_gameOverText.text = string.Format("Game Over\nFinal Score: {0}", Score);
+        m_gameOverText.transform.parent.gameObject.SetActive(true);
     }
 }

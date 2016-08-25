@@ -24,7 +24,7 @@ GameObject:
   - 114: {fileID: 114000013656622296}
   m_Layer: 0
   m_Name: GreenBrick
-  m_TagString: Untagged
+  m_TagString: Brick
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

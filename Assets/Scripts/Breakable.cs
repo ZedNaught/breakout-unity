@@ -9,7 +9,11 @@ public class Breakable : MonoBehaviour {
     }
 
     void OnCollisionEnter2D(Collision2D c) {
-        m_gameManager.IncrementScore();
-        Destroy(gameObject);
+        // increase score and destroy self on collision with ball
+
+        if (c.gameObject.tag == "Ball") {
+            m_gameManager.IncrementScore();
+            Destroy(gameObject);
+        }
     }
 }
