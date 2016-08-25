@@ -3,7 +3,7 @@ using System.Collections;
 
 public class BallMovement : MonoBehaviour {
 
-    public float m_ballSpeedY;
+    public float m_ballSpeedY, m_maxSpeedX;
     public GameObject m_bat;
 
     private Rigidbody2D m_rb;
@@ -28,9 +28,17 @@ public class BallMovement : MonoBehaviour {
         }
     }
 
-//    void StartMovement() {
-////        m_rb.velocity = m_ballSpeed * (new Vector2(-1.0f, 1.0f)).normalized;
-//    }
+    void FixedUpdate() {
+        // clamp x velocity and keep y velocity constant
+        if (!m_onBat) {
+            Vector2 currentVelocity = m_rb.velocity;
+            Vector2 targetVelocity = new Vector2(Mathf.Clamp(currentVelocity.x, -m_maxSpeedX, m_maxSpeedX), Mathf.Sign(currentVelocity.y) * m_ballSpeedY);
+            if (currentVelocity != targetVelocity) {
+                Vector2 slowdownForce = Utilities.GetDeltaVForce(m_rb.mass, currentVelocity, targetVelocity);
+                m_rb.AddForce(slowdownForce);
+            }
+        }
+    }
 
     void ResetToBat() {
         m_onBat = true;
@@ -43,19 +51,10 @@ public class BallMovement : MonoBehaviour {
         m_rb.isKinematic = false;
         Vector2 batVelocity = m_bat.GetComponent<Rigidbody2D>().velocity;
         m_rb.velocity = batVelocity + m_ballSpeedY * Vector2.up;
-//        StartMovement();
     }
 
     void TrackBat() {
         Vector3 batPosition = m_bat.transform.position;
         transform.position = new Vector2(batPosition.x, batPosition.y + m_verticalBallOffset);
-    }
-
-    void OnTriggerEnter2D(Collider2D other) {
-        Debug.Log(other);
-    }
-
-    void Hit() {
-        
     }
 }

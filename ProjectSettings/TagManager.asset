@@ -9,6 +9,7 @@ TagManager:
   - Wall
   - Brick
   - DeathZone
+  - GameManager
   layers:
   - Default
   - TransparentFX

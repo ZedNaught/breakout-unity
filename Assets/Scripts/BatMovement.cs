@@ -8,22 +8,14 @@ public class BatMovement : MonoBehaviour {
 
     private Rigidbody2D m_rb;
 
-//    Vector2 Position2d() {
-//        Vector3 position3d = transform.position;
-//        return new Vector2(position3d.x, position3d.y);
-//    }
-
-	// Use this for initialization
-	void Start () {
+	void Start() {
 	    m_rb = GetComponent<Rigidbody2D>();
 	}
-	
-	// Update is called once per frame
-	void FixedUpdate () {
+   
+	void Update () {
 	    float xInput = Input.GetAxis("Horizontal");
         float batXPosition = transform.position.x;
         if ((batXPosition > m_batLeftBound || xInput > 0) && (batXPosition < m_batRightBound || xInput < 0)) {
-//            transform.Translate(new Vector2(xInput * m_batSpeed * Time.fixedDeltaTime, 0));
             m_rb.velocity = new Vector2(xInput * m_batSpeed, 0);
         }
         else {
